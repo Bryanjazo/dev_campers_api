@@ -14,7 +14,7 @@ connectDB()
 // Route files 
 
 const bootcamps = require('./routes/bootcamps')
-
+const courses = require('./routes/courses')
 
 // starts the app with express
 const app = express(); 
@@ -30,6 +30,7 @@ if(process.env.NODE_ENV = 'development'){
 // Mpount routers
 
 app.use('/api/v1/bootcamps', bootcamps)
+app.use('/api/v1/courses', courses)
 app.use(erroHandler)
 
 // Port in use
