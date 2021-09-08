@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const slugify = require('slugify')
 
 const BootcampSchema = new mongoose.Schema(
   {
@@ -109,5 +109,10 @@ const BootcampSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
-
+// middleware create bootcamp slug fromt he name 
+BootcampSchema.pre('save', function(next){
+  console.log('Slugify Ran', this.name)
+  this.slug = slugify(this.name, {lower: true, })
+  next()
+})
 module.exports = mongoose.model('Bootcamp', BootcampSchema);
