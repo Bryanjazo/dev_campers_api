@@ -9,7 +9,8 @@ exports.getBootcamps = async (req, resp, next) =>{
 
         resp.status(200).json({success: true, count: bootcamps.length, data: bootcamps})
     } catch (error) {
-        resp.status(400).json({success: false, msg: "Could Not Fetch Bootcamps"})
+       
+        next(error)
     }
 }
 
@@ -24,8 +25,8 @@ exports.getBootcamp = async (req, resp, next) =>{
       }
       resp.status(200).json({success: true, data: bootcamp})
    } catch (error) {
-       console.log(`first`.blue.bold)
-      next(new ErrorResponse(`Bootcamp Not Found With Id Of ${req.params.id}`, 404))
+    console.log(error)
+      next(error)
    }
 }
 
@@ -41,7 +42,7 @@ exports.createBootcamps = async (req, resp, next) =>{
             data: bootcamp
         })
     } catch (error) {
-        resp.status(400).json({success: false})
+        next(error)
     }
 }
 
@@ -55,11 +56,11 @@ exports.updateBootcamp = async (req, resp, next) =>{
             runValidators: true
         })
         if(!bootcamp){
-            return resp.status(400).json({success: false})
+            return next(new ErrorResponse(`Bootcamp Not Found With Id Of ${req.params.id}`, 404))
         }
         resp.status(200).json({success: true, data: bootcamp})
     } catch (error) {
-        return resp.status(400).json({success: false})
+        next(error)
     }
 }
 // @desc    delete request for one bootcamp 
@@ -70,11 +71,11 @@ exports.deleteBootcamp = async (req, resp, next) =>{
         const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id)
 
         if(!bootcamp){
-            return resp.status(400).json({success: false})
+            return next(new ErrorResponse(`Bootcamp Not Found With Id Of ${req.params.id}`, 404))
         }
         resp.status(200).json({success: true, data: {}})
     } catch (error) {
-        return resp.status(400).json({success: false})
+        next(error)
     }
 }
 

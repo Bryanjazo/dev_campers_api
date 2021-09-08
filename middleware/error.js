@@ -1,8 +1,31 @@
-const errorHandler = (err,req,res,next) => {
-    console.log(err.stack.red)
-    console.log(`second`.blue.bold)
+const ErrorResponse = require('../utils/errorResponse')
 
-    res.status(err.statusCode || 500).json({success: false, error: err.message || "Server Error"})
+const errorHandler = (err,req,res,next) => {
+    let error = {...err}
+
+    error.message = err.message
+    console.log(err)
+
+    // Mongoose Bad Object Id
+    if(err.name === 'CastError'){
+        const message = `Bootcamp Not Found With Id Of ${err.value}`;
+        error = new ErrorResponse(message, 404)
+    }
+
+    // Mongoose duplicate key
+    if(err.code === 1100){
+        const message = `Duplicate Fields Entered `;
+        error = new ErrorResponse(message, 400)
+    }
+
+    // Mongoose validation error
+    if(err.name === "ValidationError"){
+       const message = Object.values(err.errors).map(val => val.message)
+       error = new ErrorResponse(message,400)
+    }
+    console.log(err.name)
+
+    res.status(error.statusCode || 500).json({success: false, error: error.message || "Server Error"})
 }
 
 module.exports = errorHandler;
