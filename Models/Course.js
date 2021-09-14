@@ -15,7 +15,7 @@ const CourseSchema = new mongoose.Schema(
             required: [true, 'Please add a name'],
             unique: true,
             trim: true,
-            maxlength: [100, 'Description can not be more than 50 characters']
+            maxlength: [500, 'Description can not be more than 500 characters']
           },
           weeks: {
             type: Number,

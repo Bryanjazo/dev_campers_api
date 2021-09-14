@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const morgan = require('morgan')
 const connectDB = require('./config/db')
 const colors = require('colors')
+const cors = require('cors');
 const erroHandler = require('./middleware/error')
 // Load env vars 
 dotenv.config({path: './config/config.env'});
@@ -21,6 +22,13 @@ const app = express();
 
 // Body parser 
 app.use(express.json())
+
+// Cors 
+
+app.use(cors({
+    origin: '*'
+}))
+
 
 
 // Dev loggin middleware 
