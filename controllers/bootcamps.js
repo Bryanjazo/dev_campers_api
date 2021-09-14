@@ -1,6 +1,6 @@
 const Bootcamp = require('../models/Bootcamp')
 const ErrorResponse = require('../utils/errorResponse')
-const geocode = require('../utils/geocoder')
+const geocoder = require('../utils/geocoder')
 const asyncHandler = require('../middleware/async')
 // @desc    Get request for all bootcamps 
 // @route   GET /api/va1/bootcamps
@@ -88,7 +88,7 @@ exports.getBootcampsInRadius = asyncHandler(async(req, resp, next) =>{
     const bootcamps = await Bootcamp.find({
         location: { $geoWithin: {$centerSphere: [ [lng,lat], radius]}}
     })
-    res.status(200).json({
+    resp.status(200).json({
         success: true,
         count: bootcamps.length,
         data: bootcamps
